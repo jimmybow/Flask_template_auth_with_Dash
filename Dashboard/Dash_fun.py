@@ -5,13 +5,24 @@ Created on Fri Jan 25 22:34:51 2019
 @author: jimmybow
 """
 
+from datetime import datetime, timedelta
+from extensions import cache
+from urllib.parse import parse_qs
+from dash.dependencies import Input, State, Output
 import dash_core_components as dcc
 import dash_html_components as html
-from datetime import datetime, timedelta
 import pandas as pd
 import uuid
 import os
 import pickle
+import string, random
+
+@cache.memoize(timeout=1800)
+def create_secret(key):
+    return ''.join(random.choice(string.ascii_letters + string.digits) for x in range(100))
+
+def get_dash_url(url_base):
+    return '{}?secret={}'.format(url_base, create_secret(url_base))
 
 def save_object(obj, session_id, name):
     os.makedirs('Dir_Store', exist_ok=True)
@@ -38,3 +49,17 @@ def serve_layout():
         dcc.Location(id='url', refresh=False),
         html.Div(id='index')
     ])
+
+def apply_layout(app, layout):
+    app.config.supress_callback_exceptions = True
+    app.layout = serve_layout
+
+    @app.callback(
+            Output('index', 'children'),
+            [Input('url', 'search')])
+    def display_page(request_args):
+        if request_args:
+            url_args = parse_qs(request_args[1:])   
+            if 'secret' in url_args and url_args['secret'][0] == create_secret(app.url_base_pathname):
+                return layout
+        return html.Div('Error ! 不可訪問 !')
