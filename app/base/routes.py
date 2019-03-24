@@ -49,6 +49,17 @@ def login():
             login_user(user)
             return redirect(url_for('base_blueprint.route_default'))
         return render_template('errors/page_403.html')
+    elif 'signup' in request.form:
+        username = request.form['username']
+        user = User.query.filter_by(username=username).first()
+        if user :
+            return 'Username is exist'
+        else:
+            new_user = User(**request.form)
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for('base_blueprint.route_default'))
     if not current_user.is_authenticated:
         return render_template(
             'login/login.html',
