@@ -1,4 +1,3 @@
-from bcrypt import checkpw
 from flask import jsonify, render_template, redirect, request, url_for
 from flask_login import (
     current_user,
@@ -40,35 +39,22 @@ def route_errors(error):
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm(request.form)
-    create_account_form = CreateAccountForm(request.form)
     if 'login' in request.form:
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and checkpw(password.encode('utf8'), user.password):
-            login_user(user)
-            return redirect(url_for('base_blueprint.route_default'))
-        return render_template('errors/page_403.html')
-    elif 'signup' in request.form:
         user = User.query.filter_by(username=request.form['username']).first()
-        email = User.query.filter_by(email=request.form['email']).first()
-        if user :
-            return 'Username is exist'
-        elif email:
-            return 'Email is exist'
+        if user:
+            if user.checkpw(request.form['password']):
+                login_user(user)
+                return redirect(url_for('home_blueprint.index'))
+            else:
+                status = 'Password Error !'
         else:
-            new_user = User(**request.form)
-            new_user.add_to_db()
-            login_user(new_user)
-            return redirect(url_for('base_blueprint.route_default'))
-    if not current_user.is_authenticated:
-        return render_template(
-            'login/login.html',
-            login_form=login_form,
-            create_account_form=create_account_form
-        )
-    return redirect(url_for('home_blueprint.index'))
+            status = "User doesn't exist !"
+        return render_template('login/login.html', login_form = login_form, status = status)
 
+    if current_user.is_authenticated:
+        return redirect(url_for('home_blueprint.index'))
+    return render_template('login/login.html', login_form = login_form, status = '')
+   
 @blueprint.route('/logout')
 @login_required
 def logout():

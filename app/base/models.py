@@ -1,4 +1,4 @@
-from bcrypt import gensalt, hashpw
+from bcrypt import gensalt, hashpw, checkpw
 from flask_login import UserMixin
 from sqlalchemy import Binary, Column, Integer, String
 
@@ -42,6 +42,9 @@ class User(db.Model, UserMixin):
 
     def hashpw(self, password):
         return hashpw(password.encode('utf8'), gensalt())
+
+    def checkpw(self, password):
+        return checkpw(password.encode('utf8'), self.password)
 
 
 @login_manager.user_loader

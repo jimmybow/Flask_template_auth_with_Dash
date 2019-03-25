@@ -23,3 +23,7 @@ Here is an example of a real project implemented using Flask-Gentelella:
     (pipenv run) python run.py
     or 
     (pipenv run) sh run_web.sh
+
+### Default Admin User
+    username: admin
+    password: admin

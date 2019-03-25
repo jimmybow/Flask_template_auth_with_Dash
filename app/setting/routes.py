@@ -70,6 +70,21 @@ def setting_password():
 @blueprint.route('/change_password', methods=['GET', 'POST'])
 @login_required
 def change_password():
-    if current_user.username == current_app.config['ADMIN']['username']:
+    admin_user = current_app.config['ADMIN']['username']
+    if current_user.username == admin_user:  
         return 'please change admin password from server'
-    return render_template('change_password.html')
+    else:
+        form = change_password_Form(request.form)
+        if 'Change' in request.form:
+            user = User.query.filter_by(username=current_user.username).first()
+            if user.checkpw(request.form['origin_password']):
+                if request.form['new_password'] == request.form['new_password2']:
+                    user.password = user.hashpw(request.form['new_password'])
+                    user.db_commit()
+                    status = "Change Password Success !"
+                else:
+                    status = "Both New Password is Not Equal !"
+            else:
+                status = "Origin Password Error !"
+            return render_template('change_password.html', form = form, status = status)
+        return render_template('change_password.html', form = form, status = '')
