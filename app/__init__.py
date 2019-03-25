@@ -24,7 +24,8 @@ def configure_database(app):
     def initialize_database():
         db.create_all()
         admin_username = app.config['ADMIN']['username']
-        User.query.filter_by(username=admin_username).first().delete_from_db()
+        user = User.query.filter_by(username=admin_username).first()
+        if user: user.delete_from_db()
         User(**app.config['ADMIN']).add_to_db()
 
     @app.teardown_request
