@@ -59,8 +59,6 @@ def setting_password():
                     status = "please change admin password from server !"
                 else:
                     user.password = user.hashpw(request.form['password'])
-                    print(request.form['password'])
-                    print(user.password)
                     user.db_commit()
                     status = "Setting password success !"
             else:
