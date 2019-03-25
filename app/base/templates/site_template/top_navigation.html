@@ -11,14 +11,11 @@
           <span class=" fa fa-angle-down"></span>
         </a>
         <ul class="dropdown-menu dropdown-usermenu pull-right">
-          <li><a href="javascript:;"> Profile</a></li>
-          <li>
-            <a href="javascript:;">
-              <span class="badge bg-red pull-right">50%</span>
-              <span>Settings</span>
-            </a>
-          </li>
-          <li><a href="javascript:;">Help</a></li>
+          {% if Is_admin %}
+          <li><a href="/setting/add_user"> Admin Settings </a></li>
+          {% else %}
+          <li><a href="/setting/change_password"> Settings </a></li>
+          {% endif %}
           <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
         </ul>
       </li>

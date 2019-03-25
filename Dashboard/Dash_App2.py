@@ -25,7 +25,7 @@ def Add_Dash(server):
     @app.callback(
             Output('target', 'children'),
             [Input('input_text', 'value')])
-    def callback(value):
+    def callback_fun(value):
         return 'your input is {}'.format(value)
 
     return app.server

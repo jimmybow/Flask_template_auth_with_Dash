@@ -34,6 +34,18 @@
           </ul>
         </li>
         
+        <li><a><i class="fa fa-cog"></i> Setting <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            {% if Is_admin %}
+              <li><a href="/setting/add_user">Add User</a></li>
+              <li><a href="/setting/delete_user">Delete User</a></li>
+              <li><a href="/setting/setting_password">Setting User Password</a></li>
+            {% else %}
+              <li><a href="/setting/change_password">Change Password</a></li>
+            {% endif %}
+          </ul>
+        </li>
+
       </ul>
     </div>
   </div>
@@ -41,16 +53,22 @@
 
   <!-- /menu footer buttons -->
   <div class="sidebar-footer hidden-small">
-    <a data-toggle="tooltip" data-placement="top" title="Settings">
+    {% if Is_admin %}
+    <a data-toggle="tooltip" data-placement="top" title="Admin Settings" href="/setting/add_user">
       <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
     </a>
+    {% else %}
+    <a data-toggle="tooltip" data-placement="top" title="Settings" href="/setting/change_password">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+    </a>
+    {% endif %}
     <a data-toggle="tooltip" data-placement="top" title="FullScreen">
       <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
     </a>
     <a data-toggle="tooltip" data-placement="top" title="Lock">
       <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
     </a>
-    <a data-toggle="tooltip" data-placement="top" title="Logout" href="login">
+    <a data-toggle="tooltip" data-placement="top" title="Logout" href="/logout">
       <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
     </a>
   </div>

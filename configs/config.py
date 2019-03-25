@@ -4,6 +4,9 @@ class Config(object):
     SECRET_KEY = os.urandom(24)
     SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    ADMIN = {'username': 'admin',
+             'email': 'admin',
+             'password': 'admin'}
 
     # THEME SUPPORT
     #  if set then url_for('static', filename='', theme='')

@@ -29,6 +29,20 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return str(self.username)
 
+    def add_to_db(self):
+        db.session.add(self)
+        self.db_commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        self.db_commit()
+
+    def db_commit(self):
+        db.session.commit()
+
+    def hashpw(self, password):
+        return hashpw(password.encode('utf8'), gensalt())
+
 
 @login_manager.user_loader
 def user_loader(id):

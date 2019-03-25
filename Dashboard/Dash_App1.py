@@ -9,10 +9,6 @@ from dash.dependencies import Input, State, Output
 from .Dash_fun import apply_layout_with_auth, load_object, save_object
 import dash_core_components as dcc
 import dash_html_components as html
-from datetime import datetime, timedelta
-from sqlalchemy import create_engine
-import time
-import pandas as pd
 
 url_base = '/dash/app1/'
 
@@ -29,7 +25,7 @@ def Add_Dash(server):
     @app.callback(
             Output('target', 'children'),
             [Input('input_text', 'value')])
-    def callback(value):
+    def callback_fun(value):
         return 'your input is {}'.format(value)
     
     return app.server
