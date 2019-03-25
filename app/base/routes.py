@@ -7,7 +7,7 @@ from flask_login import (
     logout_user
 )
 
-from app import db, login_manager
+from ..extensions import db, login_manager
 from app.base import blueprint
 from app.base.forms import LoginForm, CreateAccountForm
 from app.base.models import User
@@ -50,10 +50,12 @@ def login():
             return redirect(url_for('base_blueprint.route_default'))
         return render_template('errors/page_403.html')
     elif 'signup' in request.form:
-        username = request.form['username']
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=request.form['username']).first()
+        email = User.query.filter_by(email=request.form['email']).first()
         if user :
             return 'Username is exist'
+        elif email:
+            return 'Email is exist'
         else:
             new_user = User(**request.form)
             db.session.add(new_user)
