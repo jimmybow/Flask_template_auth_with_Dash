@@ -1,7 +1,7 @@
 import os
 
 class Config(object):
-    SECRET_KEY = os.urandom(24)
+    SECRET_KEY = 'key'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ADMIN = {'username': 'admin',
