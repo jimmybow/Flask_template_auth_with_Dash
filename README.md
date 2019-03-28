@@ -15,7 +15,7 @@ Here is an example of a real project implemented using Flask-Gentelella:
 - [Source code](https://github.com/afourmy/eNMS)
 
 ##  Install requirements 
-    pipenv install
+    pipenv sync
     or
     pip install -r requirements.txt
 
